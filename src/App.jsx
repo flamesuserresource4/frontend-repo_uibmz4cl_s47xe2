@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import PresaleOverview from './components/PresaleOverview';
+import RealEstateHero from './components/RealEstateHero';
+import HowItWorks from './components/HowItWorks';
 import MarketplacePreview from './components/MarketplacePreview';
+import TokenizedPortfolio from './components/TokenizedPortfolio';
 import { CheckCircle2 } from 'lucide-react';
 
-// Placeholder for SPS token smart contract
 const SPS_CONTRACT = "INSERT_CONTRACT_ADDRESS_HERE";
 
 function SectionShell({ id, title, subtitle, children }) {
@@ -47,22 +47,26 @@ export default function App() {
       />
 
       <main className="pt-16">
-        <Hero onPrimary={() => document.getElementById('presale')?.scrollIntoView({ behavior: 'smooth' })} onSecondary={() => document.getElementById('marketplace')?.scrollIntoView({ behavior: 'smooth' })} />
+        <RealEstateHero
+          onPrimary={() => document.getElementById('presale')?.scrollIntoView({ behavior: 'smooth' })}
+          onSecondary={() => document.getElementById('marketplace')?.scrollIntoView({ behavior: 'smooth' })}
+        />
 
-        <SectionShell id="about" title="About & Vision" subtitle="The bridge between blockchain and real estate.">
+        <SectionShell id="about" title="Real Estate Meets Web3" subtitle="Purpose‑built for tokenized property investing.">
           <div className="grid md:grid-cols-3 gap-6">
-            {[{h:'Liquidity', p:'Tokenized shares enable 24/7 secondary trading.'},{h:'Transparency', p:'On-chain records, verifiable ownership, and rental flows.'},{h:'Sustainability', p:'Energy-efficient assets and ESG-aligned disclosures.'}].map((c) => (
+            {[{h:'Institutional Quality', p:'Diligence, appraisal, and risk controls underpin every asset.'},{h:'Liquidity', p:'Fractional shares, 24/7 markets, and seamless exits.'},{h:'Transparent Yields', p:'On‑chain rental flows and auditable distribution.'}].map((c) => (
               <motion.div key={c.h} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
                 <h3 className="font-semibold text-xl">{c.h}</h3>
                 <p className="mt-2 text-white/80 text-sm">{c.p}</p>
               </motion.div>
             ))}
           </div>
-          <div className="mt-8 text-sm text-white/70">Global expansion map placeholder • Upcoming markets: UAE, USA, UK, SG, JP</div>
         </SectionShell>
 
-        <SectionShell id="tokenomics" title="Tokenomics" subtitle="Balanced distribution for growth and sustainability.">
-          <div className="grid lg:grid-cols-2 gap-10">
+        <HowItWorks />
+
+        <SectionShell id="presale" title="Presale Overview" subtitle="Fair, phased access to SPS with clear pricing and caps.">
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
               <h4 className="font-semibold">Distribution</h4>
               <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
@@ -78,10 +82,11 @@ export default function App() {
                   </div>
                 ))}
               </div>
-              <div className="mt-4 text-sm text-white/70">Deflationary Buyback & Burn, Listing price: $0.030</div>
+              <div className="mt-4 text-sm text-white/70">Listing price: $0.030 • Buyback & Burn mechanics</div>
             </div>
+
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-              <h4 className="font-semibold">Presale Stages</h4>
+              <h4 className="font-semibold">Stages & Pricing</h4>
               <div className="mt-4 overflow-x-auto">
                 <table className="min-w-full text-sm">
                   <thead>
@@ -96,72 +101,34 @@ export default function App() {
                       <tr key={i} className="border-t border-white/10">
                         <td className="py-2 pr-4">{i + 1}</td>
                         <td className="py-2 pr-4">${(0.012 + i * 0.002).toFixed(3)}</td>
-                        <td className="py-2">${((500000) * (0.012 + i * 0.002)).toLocaleString()}</td>
+                        <td className="py-2">{((500000) * (0.012 + i * 0.002)).toLocaleString()}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+              <div className="mt-6 flex items-center gap-3">
+                <button onClick={() => setShowWalletModal(true)} className="px-5 py-3 rounded-md bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0B1E2D] font-semibold">Connect Wallet</button>
+                <button className="px-5 py-3 rounded-md bg-white/10 text-white border border-white/10">Buy with Crypto</button>
+              </div>
+              <div className="mt-3 text-xs text-white/60">Accepted: ETH, USDT, USDC, BNB, BUSD</div>
             </div>
           </div>
         </SectionShell>
 
-        <PresaleOverview onConnect={() => setShowWalletModal(true)} />
-
-        <SectionShell id="staking" title="Staking" subtitle="Stake SPS and earn rental-backed yields.">
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { t: 'City Living', m: 3, apy: 15 },
-              { t: 'Premium Residential', m: 6, apy: 20 },
-              { t: 'Exclusive Property', m: 12, apy: 30 },
-            ].map((s) => (
-              <div key={s.t} className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-white font-semibold">{s.t}</h3>
-                <p className="text-white/70 text-sm">Lockup: {s.m} months</p>
-                <div className="mt-3 text-yellow-400 text-2xl font-bold">{s.apy}% APY</div>
-                <div className="mt-4 flex items-center gap-3">
-                  <button className="flex-1 px-4 py-2 rounded-md bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0B1E2D] font-semibold">Stake SPS</button>
-                  <button className="px-4 py-2 rounded-md bg-white/10 text-white border border-white/10">Unstake</button>
-                </div>
-                <div className="mt-3 text-xs text-white/60">Placeholder: stake() / unstake() smart contract integration</div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 text-sm text-white/70">TVL (mock): $12,450,000 • Live APY simulation running</div>
-        </SectionShell>
-
         <MarketplacePreview />
+        <TokenizedPortfolio />
 
         <SectionShell id="roadmap" title="Roadmap" subtitle="From launch to global expansion.">
           <div className="space-y-6">
-            {[1,2,3,4,5].map((phase) => (
+            {[1,2,3,4].map((phase) => (
               <motion.div key={phase} initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-yellow-400 mt-0.5" />
                 <div>
                   <div className="font-semibold">Phase {phase}</div>
-                  <div className="text-white/70 text-sm">Milestones and deliverables placeholder with animations and listings.</div>
+                  <div className="text-white/70 text-sm">Compliance, listings, secondary marketplace, and global rollouts.</div>
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </SectionShell>
-
-        <SectionShell id="faq" title="FAQ" subtitle="Everything you need to know.">
-          <div className="space-y-3">
-            {[
-              ['What is SPS?', 'A tokenized real estate ecosystem enabling fractional property ownership and yield.'],
-              ['How do I invest?', 'Connect your wallet, choose a property or presale stage, and confirm your purchase.'],
-              ['What are token shares?', 'Fractionalized ownership tokens representing rights to revenue distribution.'],
-              ['How does staking work?', 'Lock SPS for fixed terms to earn boosted yields from rental distributions.'],
-              ['How do I earn rental income?', 'Income is pooled and distributed to token holders via smart contracts.'],
-            ].map(([q,a], idx) => (
-              <details key={q} className="group rounded-lg border border-white/10 bg-white/5">
-                <summary className="cursor-pointer list-none px-4 py-3 text-white/90 font-medium flex items-center justify-between">
-                  <span>{q}</span>
-                  <span className="text-white/50">{idx % 2 === 0 ? '+' : '–'}</span>
-                </summary>
-                <div className="px-4 pb-4 text-white/70 text-sm">{a}</div>
-              </details>
             ))}
           </div>
         </SectionShell>
@@ -207,7 +174,7 @@ export default function App() {
                   </button>
                 ))}
               </div>
-              <div className="mt-4 text-xs text-white/60">Placeholder for provider init and EVM chain selection.</div>
+              <div className="mt-4 text-xs text-white/60">Provider selection and chain switch will appear here.</div>
             </motion.div>
           </motion.div>
         )}
@@ -230,7 +197,7 @@ export default function App() {
               </div>
               <div className="mt-4 flex items-center gap-2">
                 <button onClick={() => setShowVerify(true)} className="flex-1 px-3 py-2 rounded-md bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0B1E2D] font-semibold">Verify on Chain</button>
-                <a href="#staking" className="px-3 py-2 rounded-md bg-white/10 text-white border border-white/10">Stake</a>
+                <a href="#marketplace" className="px-3 py-2 rounded-md bg-white/10 text-white border border-white/10">Invest</a>
               </div>
             </div>
           </motion.div>
